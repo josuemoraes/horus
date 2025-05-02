@@ -11,3 +11,7 @@ app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 app.include_router(camera.router, prefix="/camera")
 app.include_router(dashboard.router, prefix="/dashboard")
+
+@app.get("/test-path")
+def show_static_path():
+    return {"static_dir": static_dir}
