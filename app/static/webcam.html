@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Captura Automática com Webcam</title>
+</head>
+<body>
+  <h1>📷 Capturando da Webcam</h1>
+  <video id="video" width="320" height="240" autoplay></video>
+  <p id="status">Aguardando captura...</p>
+
+  <script>
+    const video = document.getElementById('video');
+    const statusText = document.getElementById('status');
+
+    // Acessar webcam
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+        statusText.textContent = 'Webcam ativada!';
+        
+        // Simular envio após 5 segundos
+        setTimeout(() => {
+          const payload = {
+            camera_id: 'webcam01',
+            face_id: 'auto123',
+            duration: 5
+          };
+
+          fetch('/camera/detect', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          })
+          .then(res => res.json())
+          .then(data => {
+            statusText.textContent = `Enviado! Resposta: ${JSON.stringify(data)}`;
+          })
+          .catch(err => {
+            statusText.textContent = `Erro: ${err}`;
+          });
+
+        }, 5000);
+
+      })
+      .catch(err => {
+        statusText.textContent = `Erro ao acessar webcam: ${err}`;
+      });
+  </script>
+</body>
+</html>
