@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Teste de Detecção</title>
+</head>
+<body>
+  <h1>Enviar Detecção Manual</h1>
+  <form id="detectForm">
+    <label>Camera ID: <input type="text" id="camera_id" value="teste01"></label><br><br>
+    <label>Face ID: <input type="text" id="face_id" value="abc123"></label><br><br>
+    <label>Duração: <input type="number" id="duration" value="5"></label><br><br>
+    <button type="submit">Enviar</button>
+  </form>
+  <pre id="response"></pre>
+
+  <script>
+    const form = document.getElementById("detectForm");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = {
+        camera_id: document.getElementById("camera_id").value,
+        face_id: document.getElementById("face_id").value,
+        duration: parseInt(document.getElementById("duration").value),
+      };
+
+      const res = await fetch("/camera/detect", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json();
+      document.getElementById("response").textContent = JSON.stringify(json, null, 2);
+    });
+  </script>
+</body>
+</html>
