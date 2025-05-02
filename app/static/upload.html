@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload para Horus</title>
+</head>
+<body>
+  <h2>📷 Enviar imagem para o Horus</h2>
+  <form id="uploadForm">
+    <label>ID da câmera:</label><br>
+    <input type="text" name="camera_id" value="webcam01"><br><br>
+
+    <label>Imagem (com rosto):</label><br>
+    <input type="file" name="file" accept="image/*"><br><br>
+
+    <button type="submit">Enviar</button>
+  </form>
+
+  <pre id="resultado"></pre>
+
+  <script>
+    const form = document.getElementById("uploadForm");
+    const resultado = document.getElementById("resultado");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const res = await fetch("https://horus-nm5h.onrender.com/camera/detect", {
+        method: "POST",
+        body: formData
+      });
+
+      const json = await res.json();
+      resultado.textContent = JSON.stringify(json, null, 2);
+    });
+  </script>
+</body>
+</html>
