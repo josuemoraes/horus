@@ -11,7 +11,7 @@ app.include_router(camera.router, prefix="/camera")
 app.include_router(dashboard.router, prefix="/dashboard")
 
 # Servir arquivos estáticos
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 @app.get("/")
 def read_root():
