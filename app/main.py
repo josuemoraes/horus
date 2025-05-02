@@ -5,7 +5,7 @@ from app.routes import camera, dashboard
 
 app = FastAPI()
 
-static_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "static"))
+static_dir = os.path.join(os.path.dirname(__file__), "static")
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 app.include_router(camera.router, prefix="/camera")
