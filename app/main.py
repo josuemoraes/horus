@@ -1,17 +1,13 @@
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
 import os
-
+from fastapi.staticfiles import StaticFiles
+from fastapi import FastAPI
 from .routes import camera, dashboard
 
 app = FastAPI()
 
-# ⬇️ ESSA LINHA É ESSENCIAL
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
+# ⬇️ Caminho absoluto corrigido
+static_dir = os.path.join(os.path.dirname(__file__), "static")
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 app.include_router(camera.router, prefix="/camera")
 app.include_router(dashboard.router, prefix="/dashboard")
-
-@app.get("/")
-def read_root():
-    return {"message": "Horus is running"}
