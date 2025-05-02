@@ -8,7 +8,7 @@ app = FastAPI()
 
 # Caminho absoluto para a pasta 'static' dentro da pasta 'app'
 current_dir = os.path.dirname(os.path.abspath(__file__))
-static_dir = os.path.join(current_dir, "static")
+static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 
 # Montar os arquivos estáticos
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
