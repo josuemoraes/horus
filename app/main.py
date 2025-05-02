@@ -1,17 +1,23 @@
 import os
-from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
+
 from .routes import camera, dashboard
 
 app = FastAPI()
 
-# ⬇️ Caminho absoluto corrigido
-static_dir = os.path.join(os.path.dirname(__file__), "static")
+# Caminho absoluto da pasta 'static' dentro de 'app'
+static_dir = str(Path(__file__).parent / "static")
+
+# Monta a rota para arquivos estáticos
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
+# Rotas da API
 app.include_router(camera.router, prefix="/camera")
 app.include_router(dashboard.router, prefix="/dashboard")
 
+# Rota opcional para teste (ver se o path está correto)
 @app.get("/test-path")
 def show_static_path():
     return {"static_dir": static_dir}
